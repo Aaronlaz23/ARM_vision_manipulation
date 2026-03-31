@@ -1,0 +1,37 @@
+#include <Servo.h>
+
+#define Apin 9
+#define Bpin 10
+#define Cpin 11
+
+#define control1 A0
+#define control2 A1
+
+#define lengthA 100
+#define lengthB 100
+#define lengthC 10
+
+Servo servoA, servoB, servoC;
+
+float theta1, theta2, theta3;
+int Xcoord, Ycoord;
+
+void Setup(){
+  servoA.attach(Apin);
+  servoB.attach(Bpin);
+  servoC.attach(Cpin);
+  pinMode(control1, INPUT_PULLUP);
+  pinMode(control2, INPUT_PULLUP);
+}
+
+void Loop(){
+  Ycoord -= 10;
+  float cos2 = (Xcoord^2 + Ycoord^2 - lengthA^2 - lengthB^2)/(2*lengthA*lengthB);
+  theta2 = atan2(sqrt(1-pow(cos2,2)), cos2);
+  theta1 = atan2(Ycoord, Xcoord) - atan2(lengthB*sin(theta2), lengthB*cos2 + lengthA);
+  theta3 = -PI/2 - theta2 - theta1;
+
+  servoA.write(theta1*180/PI);
+  servoB.write(theta2*180/PI);
+  servoC.write(theta3*180/PI);
+}
