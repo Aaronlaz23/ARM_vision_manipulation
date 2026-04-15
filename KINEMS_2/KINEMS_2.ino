@@ -93,9 +93,7 @@ void loop(){
 
   if( thetaprev1 > 20 && thetaprev2 > 20){
     servoA.write(thetaprev1);
-    delay(10);
     servoB.write(thetaprev2);
-    delay(10);
     servoC.write(thetaprev3);
   }
 
@@ -111,7 +109,21 @@ void loop(){
     prevY = Ycoord;
 
     reached = true;
-    servoEE.write(0);
+
+    if (open){
+      delay(1000);
+      servoEE.write(50);
+      delay(1000);
+      servoEE.write(40);
+      delay(1000);
+      servoEE.write(30);
+      delay(1000);
+      servoEE.write(20);
+      delay(1000);
+      servoEE.write(0);
+      delay(1000);
+      reachDefault();
+    }
   }
   else {
     if (prevX != Xcoord && prevY != Ycoord){
@@ -122,7 +134,13 @@ void loop(){
     }
   }
 
-  delay(10);
+  delay(30);
+}
+
+void reachDefault(){
+    Ycoord = 150;
+    Xcoord = 10;
+    open = 0;
 }
 
 void reachTarget(size_t info){
